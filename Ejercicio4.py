@@ -40,6 +40,6 @@ print(f"{dataFrame}\n\n\n")
 
 from google.colab import drive
 drive.mount('/content/drive')
-path = '/content/drive/My Drive/Ejercicio4.csv'
+path = '/content/drive/My Drive/Ejercicio4.xlsx'
 with open(path, 'w', encoding = 'utf-8-sig') as f:
   dataFrame.to_csv(f)
