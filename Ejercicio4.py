@@ -37,3 +37,9 @@ print(f"{dataFrame}\n\n\n")
 # Ejercicio 4 - Convertir la column 'Height' a enteros
 dataFrame['height'] = dataFrame['height'].map({'short': 1, 'medium': 2, 'tall': 3})
 print(f"{dataFrame}\n\n\n")
+
+from google.colab import drive
+drive.mount('/content/drive')
+path = '/content/drive/My Drive/Ejercicio4.csv'
+with open(path, 'w', encoding = 'utf-8-sig') as f:
+  dataFrame.to_csv(f)
