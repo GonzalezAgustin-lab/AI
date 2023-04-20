@@ -1,36 +1,39 @@
 import pandas as pd
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+import numpy as np
 
-def export_to_google_drive(df):
-    # Aplicar transformación logarítmica a la columna numérica
-    df['columna_numerica'] = df['columna_numerica'].apply(lambda x: math.log(x))
+# Matriz:
+estudiantes = {
+    'Id': ['64414181e9eab98300feaa7c', '264414181122e51ab86ae23c3', '64414181919390a1c2f6c7c6', '64414181d7290d2fd19e9a44', '644141814cda33213d4a9c4b', '64414181150c2aae76864710'],
+    'Index': [0, 1, 2, 3, 4, 5],
+    'Height': ['tall', 'short', 'medium', 'tall', 'short', 'medium'],
+    'IsActive': ['true', 'false', 'true', 'true', 'true', 'false'],
+    'Balance': ['$1,440.09', '$1,667.76', '$1,747.90', '$2,909.78', '$2,861.98', '$3,941.87'],
+    'Age': [36, 20, 23, 35, 20, 38],
+    'EyeColor': ['brown', 'green', 'blue', 'green', 'blue', 'green'],
+    'Name': ['Sears Guy', 'Tyson Butler', 'Cheryl Wheeler', 'Aline Cortez', 'Muriel Porter', 'Herman Rowland'],
+    'Gender': ['male', 'male', 'female', 'female', 'female', 'male'],
+    'Company': ['MINGA', 'ZOLAREX', 'GEOFORM', 'DIGIRANG', 'TROPOLIS', 'EVENTAGE'],
+    'Email': ['searsguy@minga.com', 'tysonbutler@zolarex.com', 'cherylwheeler@geoform.com', 'alinecortez@digirang.com', 'murielporter@tropolis.com', 'hermanrowland@eventage.com'],
+}
 
-    # Obtener solo las primeras 10 columnas si hay más de 10
-    if len(df.columns) > 10:
-        df = df.iloc[:, :10]
+# Matriz a dataFrame
+dataFrame = pd.DataFrame(estudiantes)
+print("Dataframe:")
+print(f"{dataFrame}\n\n\n")
 
-    # Pasar los nombres de las columnas a lowercase
-    df.columns = map(str.lower, df.columns)
+# Ejercicio 1 - Aplico funcion logaritmica a la columna 'Age'
+dataFrame['Age'] = np.log(dataFrame['Age'])
 
-    # Transformar la columna ordinal a escala numérica
-    ordinal_dict = {'alto': 2, 'medio': 1, 'bajo': 0}
-    df['columna_ordinal'] = df['columna_ordinal'].map(ordinal_dict)
+# Ejercicio 2 - Aplico funcion logaritmica
+dataFrame = dataFrame.iloc[:, :10]
+print(f"DataFrame pero solamente la 10 primeras columnas (sin mail)")
+print(f"{dataFrame}\n\n\n")
 
-    # Exportar el DataFrame a un archivo Excel en Google Drive
-    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)  # Reemplazar 'credentials.json' con el nombre de tu archivo de credenciales
-    client = gspread.authorize(credentials)
-    sheet = client.create('Archivo_exportado').sheet1  # Reemplazar 'Archivo_exportado' con el nombre que quieras para tu archivo Excel en Google Drive
-    sheet.clear()
-    sheet.insert_rows(df.values.tolist(), 2)  # Insertar los datos en la segunda fila para dejar espacio para los nombres de columna
+# Ejercicio 3 - Convertir las columnas a minúscula
+dataFrame.columns = map(str.lower, dataFrame.columns)
+print("DataFrame pero las columnas en minúscula:")
+print(f"{dataFrame}\n\n\n")
 
-    print('Archivo exportado a Google Drive con éxito.')
-
-# Ejemplo de uso:
-# Crear un DataFrame de ejemplo con columnas 'columna_numerica' y 'columna_ordinal'
-df = pd.DataFrame({'columna_numerica': [10, 20, 30, 40],
-                   'columna_ordinal': ['alto', 'medio', 'bajo', 'alto']})
-
-# Llamar a la función export_to_google_drive pasando el DataFrame como argumento
-export_to_google_drive(df)
+# Ejercicio 4 - Convertir la column 'Height' a enteros
+dataFrame['height'] = dataFrame['height'].map({'short': 1, 'medium': 2, 'tall': 3})
+print(f"{dataFrame}\n\n\n")
