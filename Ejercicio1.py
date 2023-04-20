@@ -1,4 +1,6 @@
 # Función a minimizar
+import random
+
 def f(x, y):
     return 3 * x**2 * y**2
 

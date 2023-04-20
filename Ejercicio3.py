@@ -1,37 +1,36 @@
-import numpy as np
+import random
 import time
-import matplotlib.pyplot as plt
 
-def calcular_valor_en_anillo(k):
-    valor_en_anillo = k % 3
-    return valor_en_anillo
+def anillo_z(n, k):
+    if n < 0:
+        return None
+    elif n < k:
+        return n
+    else:
+        return n % k
 
-# Prueba del código con n = 73 y k = 3
 n = 73
 k = 3
-resultado = calcular_valor_en_anillo(k, n)
-print("Resultado para n = 73 y k = 3:", b  )
+valor_anillo = anillo_z(n, k)
+print(valor_anillo)
 
-# Creación de un array aleatorio de 10,000 elementos
-tamano_array = 10000
-array_aleatorio = np.random.randint(1, 1000, size=tamano_array) 
+# Crear un array aleatorio de 10,000 elementos
+arr = [random.randint(0, 10000) for i in range(10000)]
 
-# Medición del tiempo acumulado en cada iteración
-tiempo_acumulado = []
-tiempo_total = 0
-for i in range(tamano_array):
-    tiempo_inicio = time.time()
-    calcular_valor_en_anillo(k, n)
-    tiempo_fin = time.time()
-    tiempo_total += (tiempo_fin - tiempo_inicio)
-    tiempo_acumulado.append(tiempo_total)
+# Computar el anillo y medir el tiempo acumulado
+tiempos = []
+tiempo_acumulado = 0
+for i in range(len(arr)):
+    inicio = time.time()
+    valor_anillo = anillo_z(arr[i], k)
+    fin = time.time()
+    tiempo_actual = fin - inicio
+    tiempo_acumulado += tiempo_actual
+    tiempos.append(tiempo_acumulado)
 
-# Graficación del tiempo acumulado en cada iteración
-x = np.arange(tamano_array)
-y = np.array(tiempo_acumulado)
-plt.plot(x, y)
-plt.xlabel('n de iteración')
-plt.ylabel('Tiempo acumulado')
-plt.title('Costo de Computación en función de n')
-plt.grid(True)
+# Graficar el tiempo acumulado en cada iteración
+import matplotlib.pyplot as plt
+plt.plot(range(len(arr)), tiempos)
+plt.xlabel('Número de iteración')
+plt.ylabel('Tiempo acumulado (segundos)')
 plt.show()
