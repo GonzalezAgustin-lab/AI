@@ -24,13 +24,13 @@ print(f"{dataFrame}\n\n\n")
 # Ejercicio 1 - Aplico funcion logaritmica a la columna 'Age'
 dataFrame['Age'] = np.log(dataFrame['Age'])
 
-# Ejercicio 2 - Aplico funcion logaritmica
+# Ejercicio 2 - Obtengo las 10 primeras columnas
 dataFrame = dataFrame.iloc[:, :10]
 print(f"DataFrame pero solamente la 10 primeras columnas (sin mail)")
 print(f"{dataFrame}\n\n\n")
 
 # Ejercicio 3 - Convertir las columnas a minúscula
-dataFrame.columns = map(str.lower, dataFrame.columns)
+dataFrame.columns = dataFrame.columns.str.lower()
 print("DataFrame pero las columnas en minúscula:")
 print(f"{dataFrame}\n\n\n")
 
