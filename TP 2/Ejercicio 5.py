@@ -22,6 +22,16 @@ df_titanic['Sex'] = df_titanic['Sex'].map(sex_mapping)
 embarked_mapping = { label:idx for idx, label in enumerate(np.unique(df_titanic['Embarked']))}
 df_titanic['Embarked'] = df_titanic['Embarked'].map(embarked_mapping)
 
+# Con este codigo códicariamos la caracteristicas ordinales
+# pclass_mapping = {
+#     "First class": 1, 
+#     "Second class": 2,
+#     "Third Class": 3
+# }
+
+# df_titanic['PClass'] = df_titanic['PClass'].map(pclass_mapping)
+
+
 #codificacion
 print(f"Codificar etiquetas de clase\n: ${df_titanic}")
 

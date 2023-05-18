@@ -3,11 +3,7 @@ from scipy.stats import spearmanr
 
 def calcularSpearman(x, y):
 
-    # Convertir los conjuntos de datos en arrays numpy
-    x = np.array(x)
-    y = np.array(y)
-
-    # Calcular el coeficiente de correlación de Spearman y su valor p
+    # Calcular el coeficiente de correlación de Spearman
     correlacion, __ = spearmanr(x, y)
 
     return correlacion
@@ -29,6 +25,7 @@ y = [2, 5, 6, 4, 9, 8, 6, 12, 13, 17]
 #         case 'Universidad':
 #             xCuantitativo.append(5)
 # x = xCuantitativo
-
+#
+# print(calcularSpearman(x, y))
 
 print(calcularSpearman(range(len(x)), y))
