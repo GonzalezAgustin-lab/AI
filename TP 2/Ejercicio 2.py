@@ -1,158 +1,81 @@
-#ejercicio 1
-""" import random
-
-# Función a minimizar
-def f(x, y):
-    return 3 * x**2 * y**2
-
-# Parámetros iniciales aleatorios entre 0 y 1
-x = random.uniform(0, 1)
-y = random.uniform(0, 1)
-
-# Proceso iterativo
-for i in range(1, 101):
-    # Calcular el valor de la función en la posición actual
-    funActual = f(x, y)
-    
-    # Calcular el gradiente de la función en la posición actual
-    derivadaX = 6 * x * y**2
-    derivadaY = 6 * x**2 * y
-    
-    # Actualizar las coordenadas en la dirección del gradiente
-    x -= 0.05 * derivadaX
-    y -= 0.05 * derivadaY
-    
-    # Imprimir los valores de la función en cada iteración
-    print("Iteración:", i, "par(",x, " , ",y,"), Valor funcion f(x, y):", funActual)
-    print()
-"""
-#Ejercicio 2
-"""
-def dijkstra(Grafo, salida, final):
-    dist, prev = {}, {}
-    result = []
-
-    for vertice in Grafo:
-        dist[vertice] = float("inf")
-        prev[vertice] = None
-    dist[salida] = 0
-
-    nodos = [vertice for vertice in Grafo]
-    
-    while nodos:
-        print(nodos)
-        nodoVisitado = min(nodos, key=dist.get)
-        nodos.remove(nodoVisitado)
-        result.append(nodoVisitado)
-
-        for vecino in Grafo[nodoVisitado]:
-            if vecino in nodos and dist[vecino] > dist[nodoVisitado] + Grafo[nodoVisitado][vecino]:
-                dist[vecino] = dist[nodoVisitado] + Grafo[nodoVisitado][vecino]
-                prev[vecino] = nodoVisitado
-
-    return result, dist[final], prev
-
-
-grafo = {
-    'A': {'A': 4.1, 'C': 3.1 },
-    'B': {'D': 5.1},
-    'C': {'B': 2.1, 'D': 3.2},
-    'D': {},
-}
-
-s, distancia, previos = dijkstra(grafo, 'A', 'D')
-print(f"{s=}")
-print(f"{distancia=}")
-print(f"{previos=}")
-"""
-#ejercicio 3
-import numpy as np
-import time
+import math
 import matplotlib.pyplot as plt
 
-def calcular_valor_en_anillo(k):
-    valor_en_anillo = k % 3
-    return valor_en_anillo
+def pearson_correlation(points):
+    n = len(points)
+    sum_x = sum_y = sum_xy = sum_x2 = sum_y2 = 0
 
-# Prueba del código con n = 73 y k = 3
-n = 73
-k = 3
-resultado = calcular_valor_en_anillo(k, n)
-print("Resultado para n = 73 y k = 3:", resultado)
+    for x, y in points:
+        sum_x += x
+        sum_y += y
+        sum_xy += x * y
+        sum_x2 += x ** 2
+        sum_y2 += y ** 2
 
-# Creación de un array aleatorio de 10,000 elementos
-tamano_array = 10000
-array_aleatorio = np.random.randint(1, 1000, size=tamano_array)
+    numerator = (n * sum_xy) - (sum_x * sum_y)
+    denominator = math.sqrt((n * sum_x2 - sum_x ** 2) * (n * sum_y2 - sum_y ** 2))
+    correlation = numerator / denominator
 
-# Medición del tiempo acumulado en cada iteración
-tiempo_acumulado = []
-tiempo_total = 0
-for i in range(tamano_array):
-    tiempo_inicio = time.time()
-    calcular_valor_en_anillo(k, n)
-    tiempo_fin = time.time()
-    tiempo_total += (tiempo_fin - tiempo_inicio)
-    tiempo_acumulado.append(tiempo_total)
+    return correlation
 
-# Graficación del tiempo acumulado en cada iteración
-x = np.arange(tamano_array)
-y = np.array(tiempo_acumulado)
-plt.plot(x, y)
-plt.xlabel('n de iteración')
-plt.ylabel('Tiempo acumulado')
-plt.title('Costo de Computación en función de n')
-plt.grid(True)
+# Parte 1: Cálculo de la correlación para un conjunto de puntos dados
+
+# Ejemplo de entrada
+points = [(1, 1), (2, 2), (3, 3), (4, 4), (5, 5)]
+correlation = pearson_correlation(points)
+print(f"Correlación: {correlation}")
+
+# Gráfico X vs Y
+x = [point[0] for point in points]
+y = [point[1] for point in points]
+plt.scatter(x, y)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Gráfico X vs Y')
 plt.show()
 
-"""
-graph = {
-    'A': {'A': 4.1, 'C': 3.1 },
-    'B': {'D': 5.1},
-    'C': {'B': 2.1, 'D': 3.2, 'E': 6.1},
-    'E': {'D': 5},
-} 
+# Parte 2: Prueba de correlación lineal para Y = 2X + 3
 
-def dijkstra(graph, source):
-    dist = {}  # Diccionario para almacenar las distancias mínimas desde el origen
-    prev = {}  # Diccionario para almacenar los nodos previos en el camino más corto
-    nodos = []  # Lista para almacenar los nodos no visitados
+# Generar 50 pares (x, y) utilizando la ecuación de la recta Y = 2X + 3
+points_linear = [(x, 2 * x + 3) for x in range(1, 51)]
+correlation_linear = pearson_correlation(points_linear)
+print(f"Correlación (lineal): {correlation_linear}")
 
-    for v in graph.keys():
-        dist[v] = float('inf')  # Inicializar todas las distancias como infinito
-        prev[v] = None  # Inicializar todos los nodos previos como no definidos
-        nodos.append(v)  # Agregar todos los nodos a la lista nodos
+# Gráfico X vs Y
+x_linear = [point[0] for point in points_linear]
+y_linear = [point[1] for point in points_linear]
+plt.scatter(x_linear, y_linear)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Gráfico X vs Y (lineal)')
+plt.show()
 
-    dist[source] = 0  # La distancia desde el origen al origen es 0
+# Parte 3: Prueba de correlación para puntos en un círculo de radio 1 centrado en el origen
 
-    while nodos:
-        # Obtener el nodo con la distancia mínima en nodos
-        nodoVisitado = min(nodos, key=lambda x: dist[x])
-        nodos.remove(nodoVisitado)  # Remover nodoVisitado de la lista nodos
+# Generar 50 pares ordenados en el círculo de radio 1 centrado en el origen
+points_circle = []
+for theta in range(0, 360, int(360 / 50)):
+    x = math.cos(math.radians(theta))
+    y = math.sin(math.radians(theta))
+    points_circle.append((x, y))
 
-        for v in graph[nodoVisitado]:  # Iterar sobre los vecinos de nodoVisitado
-            alt = dist[nodoVisitado] + graph[nodoVisitado][v]  # Calcular la nueva distancia tentativa desde el origen hasta v a través de nodoVisitado
-            if alt < dist[v]:  # Si la nueva distancia es menor Nodosue la distancia actual
-                dist[v] = alt  # Actualizar la distancia mínima
-                prev[v] = nodoVisitado  # Actualizar el nodo previo en el camino más corto
+correlation_circle = pearson_correlation(points_circle)
+print(f"Correlación (círculo): {correlation_circle}")
 
-    return dist, prev  # Devolver los diccionarios de distancias mínimas y nodos previos
+# Gráfico X vs Y
+x_circle = [point[0] for point in points_circle]
+y_circle = [point[1] for point in points_circle]
+plt.scatter(x_circle, y_circle)
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.title('Gráfico X vs Y (círculo)')
+plt.show()
 
-def shortest_path(source, destination, prev):
-    # Recorremos los predecesores para obtener el camino desde la fuente hasta el destino
-    path = []
-    while destination is not None:
-        path.append(destination)
-        destination = prev[destination]
-    # Invertimos el camino obtenido, ya Nodosue se agregaron los nodos desde el destino hasta la fuente
-    path.reverse()
-    return path
+#1. Para la parte 1, como los puntos están perfectamente alineados en una relación 1:1, la correlación será 1. 
+#El gráfico mostrará una línea diagonal perfecta.
 
-# Luego de ejecutar la función dijkstra y obtener los diccionarios dist y prev
-# Supongamos Nodosue "A" es el nodo fuente y "E" es el nodo final
-source = "A"
-destination = "E"
-dijkstra(graph, 'A')
-path = shortest_path('A', 'D', prev)
-print("Camino más corto desde", source, "hasta", destination, ":", path)
+#2. Para la parte 2, dado que los puntos se generan siguiendo una relación lineal Y = 2X + 3, la correlación será 1, 
+#ya que hay una relación lineal perfecta. El gráfico mostrará una línea recta ascendente.
 
-"""
+#3. Para la parte 3, dado que los puntos se generan en un círculo de radio 1 centrado en el origen, no hay una relación lineal 
+#entre X e Y. Por lo tanto, la correlación será cercana a 0. El gráfico mostrará una dispersión de puntos alrededor del círculo.
